@@ -1,0 +1,23 @@
+spring:
+  config:
+    activate:
+      on-profile: local-dayeong
+  datasource:
+    url: jdbc:mysql://localhost:3306/testdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Seoul
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  sql:
+    init:
+      data-locations: classpath:data.sql
+      schema-locations: classpath:schema.sql
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: create #create, create-drop, update ...
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
