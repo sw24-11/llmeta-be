@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    include: local
+
+  servlet:
+    session:
+      cookie:
+        path: /
+        http-only: false
+        max-age: P7D
+
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
