@@ -12,3 +12,23 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+springdoc:
+  api-docs:
+    path: /api-docs
+    group:
+      enable: true
+
+  swagger-ui:
+    path: /swagger-ui-custom.html
+    enabled: true
+    groups-order: ASC
+    tags-sorter: alpha
+    operations-sorter: alpha
+    display-request-duration: true
+    doc-expansion: none
+
+#  cache:
+#    disabled: true
+
+  model-and-view-allowed: true
