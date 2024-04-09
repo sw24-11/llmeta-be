@@ -19,9 +19,7 @@ public enum ErrorCode {
     F01("유효하지 않은 파일"),
     D02("데이터베이스 접근 실패"),
     D03("조회 결과 없음"),
-    R04("유효하지 않은 요청"),
-    U02("프로메테우스 응답 없음"),
-    U03("메일 전송 실패");
+    R04("유효하지 않은 요청");
 
     private final String description;
 }
