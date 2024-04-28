@@ -2,6 +2,7 @@ spring:
   config:
     activate:
       on-profile: local-dayeong
+
   datasource:
     url: jdbc:mysql://localhost:3306/llmeta?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Seoul
     username: root
@@ -13,6 +14,7 @@ spring:
       data-locations: classpath:data.sql
       schema-locations: classpath:schema.sql
       mode: always
+
   jpa:
     hibernate:
       ddl-auto: none #create, create-drop, update ...
