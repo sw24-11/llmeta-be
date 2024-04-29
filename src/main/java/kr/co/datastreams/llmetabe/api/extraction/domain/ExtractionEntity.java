@@ -33,12 +33,6 @@ public class ExtractionEntity {
     @Column(name = "file_name")
     private String fileName;
 
-    @Column(name = "file_key")
-    private String fileKey;
-
-    @Column(name = "file_url")
-    private String fileUrl;
-
     @Column(name = "meta_data", nullable = false)
     private String metaData;
 

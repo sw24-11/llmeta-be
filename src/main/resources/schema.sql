@@ -19,8 +19,6 @@ CREATE TABLE extraction (
     member_id INT NOT NULL,
     type VARCHAR(100) NOT NULL,
     file_name VARCHAR(255),
-    file_key VARCHAR(255),
-    file_url VARCHAR(255),
     meta_data VARCHAR(1000) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     model_id INT NOT NULL,
