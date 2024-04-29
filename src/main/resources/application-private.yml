@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    include: private
+
+# s3
+cloud:
+  aws:
+    credentials:
+      access-key: AKIA4KXFF5U6GG4KZ7AT
+      secret-key: 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
+
+    s3:
+      bucket: llmeta-be-bucket
+
+    stack.auto: false
+    region.static: ap-northeast-2
