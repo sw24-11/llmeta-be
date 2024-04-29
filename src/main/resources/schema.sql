@@ -32,7 +32,7 @@ CREATE TABLE evaluation (
     evaluation_id INT PRIMARY KEY AUTO_INCREMENT,
     extraction_id INT NOT NULL,
     rate DOUBLE NOT NULL,
-    feedback VARCHAR(1000),
+    feedback VARCHAR(1000) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (extraction_id) REFERENCES extraction(extraction_id)
 );
