@@ -24,7 +24,7 @@ public class ExtractionEntity {
 
     @ManyToOne()
     @JoinColumn(name = "member_id")
-    private MemberEntity memberId; // TODO : MemberEntity 추가 후 수정 필요
+    private MemberEntity member; // TODO : MemberEntity 추가 후 수정 필요
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, length = 100)

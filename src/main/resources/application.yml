@@ -1,6 +1,9 @@
 server:
   port: 8080
 
+flask:
+  url: http://localhost:5000
+
 spring:
   servlet:
     session:

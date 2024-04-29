@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class ExtractionResponseDto {
     private Long extractionId;
     private DataType type;
-    private MetaData metaData;
+    private List<MetaData> metaData;
 }
