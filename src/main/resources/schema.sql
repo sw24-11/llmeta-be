@@ -1,5 +1,10 @@
 USE llmeta;
 
+DROP TABLE IF EXISTS evaluation;
+DROP TABLE IF EXISTS extraction;
+DROP TABLE IF EXISTS model;
+DROP TABLE IF EXISTS member;
+
 CREATE TABLE member (
     member_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL ,
@@ -9,17 +14,10 @@ CREATE TABLE member (
     UNIQUE KEY email_unique (email)
 );
 
-CREATE TABLE model (
-    model_id INT PRIMARY KEY AUTO_INCREMENT,
-    model_name VARCHAR(100) NOT NULL,
-    model_spec VARCHAR(1000) NOT NULL
-);
-
 CREATE TABLE extraction (
     extraction_id INT PRIMARY KEY AUTO_INCREMENT,
     member_id INT NOT NULL,
-    is_file BOOLEAN NOT NULL,
-    link VARCHAR(255),
+    type VARCHAR(100) NOT NULL,
     file_name VARCHAR(255),
     file_key VARCHAR(255),
     file_url VARCHAR(255),
