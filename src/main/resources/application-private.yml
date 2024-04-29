@@ -6,8 +6,8 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key: AKIA4KXFF5U6GG4KZ7AT
-      secret-key: 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
+      access-key: ${{ secrets.AWS_ACCESS_KEY }}
+      secret-key: ${{ secrets.AWS_SECRET_KEY }}
 
     s3:
       bucket: llmeta-be-bucket
