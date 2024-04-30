@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -138,8 +139,15 @@ public class ExtractionService {
      * @return List<MetaData>
      */
     private List<MetaData> parseMetaDataFromFlaskResponse(FlaskResponseDto flaskResponseDto) {
-        // TODO : Implement this method
-        return null;
+        List<String> metaDataSplit = List.of(flaskResponseDto.getText().split(", "));
+        List<MetaData> metaDatas = new ArrayList<>();
+
+        for (String data : metaDataSplit) {
+            String[] split = data.split(": ");
+            metaDatas.add(new MetaData(split[0], split[1]));
+        }
+
+        return metaDatas;
     }
 
     /**
