@@ -2,7 +2,7 @@ server:
   port: 8080
 
 flask:
-  url: http://localhost:5000/metadata/extraction
+  url: http://localhost:5000/extraction
 
 spring:
   servlet:

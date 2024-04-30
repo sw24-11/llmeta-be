@@ -10,7 +10,7 @@ import kr.co.datastreams.llmetabe.api.extraction.dto.request.ExtractionRequestDt
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.ExtractionResponseDto;
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.FlaskResponseDto;
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.MetaData;
-import kr.co.datastreams.llmetabe.api.extraction.exception.FileInputStreamException;
+import kr.co.datastreams.llmetabe.global.exception.FileInputStreamException;
 import kr.co.datastreams.llmetabe.api.extraction.exception.FlaskHttpNoResponseException;
 import kr.co.datastreams.llmetabe.global.exception.DatabaseAccessException;
 import lombok.RequiredArgsConstructor;
