@@ -2,7 +2,6 @@ USE llmeta;
 
 DROP TABLE IF EXISTS evaluation;
 DROP TABLE IF EXISTS extraction;
-DROP TABLE IF EXISTS model;
 DROP TABLE IF EXISTS member;
 
 CREATE TABLE member (
@@ -22,8 +21,7 @@ CREATE TABLE extraction (
     meta_data VARCHAR(1000) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     model_id INT NOT NULL,
-    FOREIGN KEY (member_id) REFERENCES member(member_id),
-    FOREIGN KEY (model_id) REFERENCES model(model_id)
+    FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
 CREATE TABLE evaluation (

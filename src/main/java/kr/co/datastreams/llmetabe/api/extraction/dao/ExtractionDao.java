@@ -7,6 +7,8 @@ import kr.co.datastreams.llmetabe.global.exception.NoSearchResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class ExtractionDao {
@@ -14,6 +16,10 @@ public class ExtractionDao {
 
     public ExtractionEntity getExtractionEntity(Long extractionId) {
         return extractionRepository.findById(extractionId).orElseThrow(NoSearchResultException::new);
+    }
+
+    public List<ExtractionEntity> getExtractionEntitiesByMember(MemberEntity member) {
+        return extractionRepository.findByMember(member);
     }
 
     public void saveExtractionEntity(ExtractionEntity extractionEntity) {
