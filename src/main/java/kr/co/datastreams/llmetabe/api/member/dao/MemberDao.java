@@ -1,4 +1,4 @@
-package kr.co.datastreams.llmetabe.api.auth.dao;
+package kr.co.datastreams.llmetabe.api.member.dao;
 
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRequestDto;
 import kr.co.datastreams.llmetabe.api.member.domain.MemberEntity;
