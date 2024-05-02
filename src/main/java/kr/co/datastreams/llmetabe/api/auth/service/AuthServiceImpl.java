@@ -1,6 +1,6 @@
 package kr.co.datastreams.llmetabe.api.auth.service;
 
-import kr.co.datastreams.llmetabe.api.auth.dao.MemberDao;
+import kr.co.datastreams.llmetabe.api.member.dao.MemberDao;
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRequestDto;
 import kr.co.datastreams.llmetabe.api.exception.EmailAlreadyExistException;
 import kr.co.datastreams.llmetabe.api.member.repository.MemberRepository;
