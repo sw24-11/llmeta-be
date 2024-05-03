@@ -24,7 +24,7 @@ public class EvaluationEntity {
 
     @ManyToOne
     @JoinColumn(name = "extraction_id")
-    private ExtractionEntity extractionId;
+    private ExtractionEntity extraction;
 
     @Column(name = "rate", nullable = false)
     private Double rate;

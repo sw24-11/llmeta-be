@@ -19,7 +19,7 @@ CREATE TABLE extraction (
     type VARCHAR(100) NOT NULL,
     file_name VARCHAR(255),
     meta_data VARCHAR(1000) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ,
     model_id INT NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
@@ -29,6 +29,6 @@ CREATE TABLE evaluation (
     extraction_id INT NOT NULL,
     rate DOUBLE NOT NULL,
     feedback VARCHAR(1000) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (extraction_id) REFERENCES extraction(extraction_id)
 );
