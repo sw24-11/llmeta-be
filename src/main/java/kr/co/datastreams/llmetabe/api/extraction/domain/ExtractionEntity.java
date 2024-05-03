@@ -2,6 +2,7 @@ package kr.co.datastreams.llmetabe.api.extraction.domain;
 
 import jakarta.persistence.*;
 import kr.co.datastreams.llmetabe.api.extraction.enums.DataType;
+import kr.co.datastreams.llmetabe.api.member.domain.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class ExtractionEntity {
 
     @ManyToOne()
     @JoinColumn(name = "member_id")
-    private MemberEntity member; // TODO : MemberEntity 추가 후 수정 필요
+    private MemberEntity member;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, length = 100)
