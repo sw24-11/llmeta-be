@@ -35,6 +35,9 @@ jobs:
     # Gradle Build (test 제외)
     - name: Build with Gradle
       run: ./gradlew clean build --exclude-task test
+      env:
+        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
 
     - name: DockerHub Login
       uses: docker/login-action@v2
