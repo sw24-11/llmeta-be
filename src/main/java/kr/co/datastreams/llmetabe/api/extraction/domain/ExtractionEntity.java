@@ -1,6 +1,8 @@
 package kr.co.datastreams.llmetabe.api.extraction.domain;
 
 import jakarta.persistence.*;
+import java.util.List;
+import kr.co.datastreams.llmetabe.api.evaluation.domain.EvaluationEntity;
 import kr.co.datastreams.llmetabe.api.extraction.enums.DataType;
 import kr.co.datastreams.llmetabe.api.member.domain.MemberEntity;
 import lombok.AllArgsConstructor;
@@ -39,6 +41,9 @@ public class ExtractionEntity {
 
     @Column(name = "create_at", nullable = false)
     private Timestamp createAt;
+
+    @OneToMany(mappedBy = "extractionId")
+    private List<EvaluationEntity> evaluations;
 
     // TODO : EvaluationEntity 추가 후 관계 작성 필요
 }

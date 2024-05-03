@@ -2,7 +2,9 @@ package kr.co.datastreams.llmetabe.api.member.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import java.util.List;
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRequestDto;
+import kr.co.datastreams.llmetabe.api.extraction.domain.ExtractionEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,9 @@ public class MemberEntity {
 
     @Column(name = "job", nullable = false)
     private String job;
+
+    @OneToMany(mappedBy = "member_id")
+    private List<ExtractionEntity> extractions;
 
     public MemberEntity(SignupRequestDto signupRequestDto) {
         this.name = signupRequestDto.getName();
