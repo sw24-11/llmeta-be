@@ -36,7 +36,7 @@ public class MemberEntity {
     @Column(name = "job", nullable = false)
     private String job;
 
-    @OneToMany(mappedBy = "member_id")
+    @OneToMany(mappedBy = "member")
     private List<ExtractionEntity> extractions;
 
     public MemberEntity(SignupRequestDto signupRequestDto) {

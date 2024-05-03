@@ -33,8 +33,8 @@ public class ExtractionController {
 
     /**
      * 데이터 추출 메소드
-     * @param extractionRequestDto
-     * @param principal
+     * @param extractionRequestDto extractionRequest 시 사용하는 dto
+     * @param principal principal
      *
      * @return Response<?>
      */

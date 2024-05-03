@@ -42,8 +42,6 @@ public class ExtractionEntity {
     @Column(name = "create_at", nullable = false)
     private Timestamp createAt;
 
-    @OneToMany(mappedBy = "extractionId")
+    @OneToMany(mappedBy = "extraction")
     private List<EvaluationEntity> evaluations;
-
-    // TODO : EvaluationEntity 추가 후 관계 작성 필요
 }

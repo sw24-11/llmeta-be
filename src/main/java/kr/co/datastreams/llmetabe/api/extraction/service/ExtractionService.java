@@ -1,6 +1,6 @@
 package kr.co.datastreams.llmetabe.api.extraction.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +48,7 @@ public class ExtractionService {
 
     private final ExtractionDao extractionDao;
     private final MemberDao memberDao;
-    private final AmazonS3Client amazonS3Client;
+    private final AmazonS3 amazonS3Client;
 
     /**
      * metadata를 추출하고 이를 DB와 S3에 저장하는 메소드
