@@ -1,15 +1,17 @@
 package kr.co.datastreams.llmetabe.api.extraction.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Objects;
 import kr.co.datastreams.llmetabe.api.extraction.dao.ExtractionDao;
 import kr.co.datastreams.llmetabe.api.extraction.domain.ExtractionEntity;
 import kr.co.datastreams.llmetabe.api.extraction.dto.request.ExtractionRequestDto;
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.ExtractionResponseDto;
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.FlaskResponseDto;
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.MetaData;
+import kr.co.datastreams.llmetabe.api.member.dao.MemberDao;
 import kr.co.datastreams.llmetabe.global.exception.FileInputStreamException;
 import kr.co.datastreams.llmetabe.api.extraction.exception.FlaskHttpNoResponseException;
 import kr.co.datastreams.llmetabe.global.exception.DatabaseAccessException;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,17 +47,17 @@ public class ExtractionService {
     private String bucket;
 
     private final ExtractionDao extractionDao;
-    private final MemberDao memberDao; // TODO : Implement this class
-    private final AmazonS3Client amazonS3Client;
+    private final MemberDao memberDao;
+    private final AmazonS3 amazonS3Client;
 
     /**
      * metadata를 추출하고 이를 DB와 S3에 저장하는 메소드
-     * @param extractionRequestDto
-     * @param principal
+     * @param extractionRequestDto extractionRequest 시 사용하는 dto
+     * @param principal principal
      *
      * @return extractionResponseDto
-     * @throws FlaskHttpNoResponseException
-     * @throws FileInputStreamException
+     * @throws FlaskHttpNoResponseException Flask 서버에서 응답이 없을 경우
+     * @throws FileInputStreamException 파일을 읽는 중 예외가 발생할 경우
      */
     public ExtractionResponseDto extractData(ExtractionRequestDto extractionRequestDto, Principal principal) {
 
@@ -79,7 +82,7 @@ public class ExtractionService {
         // 추출 정보를 DB에 저장
         try {
             ExtractionEntity extractionEntity = new ExtractionEntity();
-            extractionEntity.setMember(memberDao.getMemberEntity(principal.getName())); // TODO : Implement this method
+            extractionEntity.setMember(memberDao.getMemberEntityByEmail(principal.getName()));
             extractionEntity.setType(extractionRequestDto.getDataType());
             extractionEntity.setFileName(extractionRequestDto.getFile().getOriginalFilename());
             extractionEntity.setMetaData(metaDataToString(metaData));
@@ -99,10 +102,10 @@ public class ExtractionService {
 
     /**
      * Flask 서버로부터 response를 받아오는 메소드
-     * @param extractionRequestDto
+     * @param extractionRequestDto extractionRequest 시 사용하는 dto
      *
      * @return FlaskResponseDto
-     * @throws Exception
+     * @throws Exception Flask 서버에서 응답이 없을 경우 등
      */
     private FlaskResponseDto getFlaskResponse(ExtractionRequestDto extractionRequestDto) throws Exception {
 
@@ -126,32 +129,36 @@ public class ExtractionService {
         // Response parsing
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-        FlaskResponseDto flaskResponseDto = objectMapper.readValue(response.getBody().toString(), FlaskResponseDto.class);
 
-        return flaskResponseDto;
+        return objectMapper.readValue(Objects.requireNonNull(response.getBody()).toString(), FlaskResponseDto.class);
     }
 
     /**
      * Flask 서버로부터 받아온 response를 parsing하여 MetaData로 변환하는 메소드
-     * @param flaskResponseDto
+     * @param flaskResponseDto Flask 서버로부터 받아온 response
      *
      * @return List<MetaData>
      */
     private List<MetaData> parseMetaDataFromFlaskResponse(FlaskResponseDto flaskResponseDto) {
-        // TODO : Implement this method
-        return null;
+        List<String> metaDataSplit = List.of(flaskResponseDto.getText().split(", "));
+        List<MetaData> metaDatas = new ArrayList<>();
+
+        for (String data : metaDataSplit) {
+            String[] split = data.split(": ");
+            metaDatas.add(new MetaData(split[0], split[1]));
+        }
+
+        return metaDatas;
     }
 
     /**
      * S3에 파일을 저장하는 메소드
-     * @param file
+     * @param file MultipartFile
      *
-     * @return void
-     * @throws IOException
+     * @throws IOException 파일을 읽는 중 예외가 발생할 경우
      */
     private void saveFileToS3(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
-        String fileUrl = "https://" + bucket + "/log" + fileName;
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(file.getContentType());
@@ -162,7 +169,7 @@ public class ExtractionService {
 
     /**
      * MetaData를 String으로 변환하는 메소드
-     * @param metaData
+     * @param metaData 변환할 MetaData 리스트
      *
      * @return String
      */

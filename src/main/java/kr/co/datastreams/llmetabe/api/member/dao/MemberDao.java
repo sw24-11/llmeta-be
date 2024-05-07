@@ -4,6 +4,7 @@ import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRequestDto;
 import kr.co.datastreams.llmetabe.api.member.domain.MemberEntity;
 import kr.co.datastreams.llmetabe.api.member.repository.MemberRepository;
 import kr.co.datastreams.llmetabe.global.exception.DatabaseAccessException;
+import kr.co.datastreams.llmetabe.global.exception.NoSearchResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Repository;
 public class MemberDao {
 
     private final MemberRepository memberRepository;
+
+    public MemberEntity getMemberEntityByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(NoSearchResultException::new);
+    }
 
     public void saveMemberEntity(SignupRequestDto signupRequestDto) {
         try {

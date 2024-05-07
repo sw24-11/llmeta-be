@@ -1,7 +1,10 @@
 package kr.co.datastreams.llmetabe.api.extraction.domain;
 
 import jakarta.persistence.*;
+import java.util.List;
+import kr.co.datastreams.llmetabe.api.evaluation.domain.EvaluationEntity;
 import kr.co.datastreams.llmetabe.api.extraction.enums.DataType;
+import kr.co.datastreams.llmetabe.api.member.domain.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +27,7 @@ public class ExtractionEntity {
 
     @ManyToOne()
     @JoinColumn(name = "member_id")
-    private MemberEntity member; // TODO : MemberEntity 추가 후 수정 필요
+    private MemberEntity member;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, length = 100)
@@ -39,5 +42,6 @@ public class ExtractionEntity {
     @Column(name = "create_at", nullable = false)
     private Timestamp createAt;
 
-    // TODO : EvaluationEntity 추가 후 관계 작성 필요
+    @OneToMany(mappedBy = "extraction")
+    private List<EvaluationEntity> evaluations;
 }

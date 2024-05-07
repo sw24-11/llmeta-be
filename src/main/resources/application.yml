@@ -4,6 +4,22 @@ server:
 flask:
   url: http://localhost:5000/extraction
 
+# s3
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+
+    s3:
+      bucket: llmeta-be-bucket
+
+    stack:
+      auto: false
+
+    region:
+      static: ap-northeast-2
+
 spring:
   servlet:
     session:

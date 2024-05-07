@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import kr.co.datastreams.llmetabe.api.extraction.dao.ExtractionDao;
 import kr.co.datastreams.llmetabe.api.extraction.domain.ExtractionEntity;
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.MetaData;
+import kr.co.datastreams.llmetabe.api.member.dao.MemberDao;
 import kr.co.datastreams.llmetabe.global.exception.FileInputStreamException;
 import kr.co.datastreams.llmetabe.api.log.dto.Input;
 import kr.co.datastreams.llmetabe.api.log.dto.Log;
@@ -33,19 +34,19 @@ public class LogService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private final MemberDao memberDao; // TODO : Implement this class
+    private final MemberDao memberDao;
     private final ExtractionDao extractionDao;
     private final AmazonS3Client amazonS3Client;
 
     /**
      * 로그를 가져와 반환하는 메소드
-     * @param principal
+     * @param principal 인증된 계정인 지 확인, 유저 정보를 담고 있는 principal
      *
      * @return logResponseDto
      */
     public LogResponseDto getLogs(Principal principal) {
 
-        List<ExtractionEntity> extractionEntities = extractionDao.getExtractionEntitiesByMember(memberDao.getMemberByEmail(principal.getName())); // TODO : Implement this method
+        List<ExtractionEntity> extractionEntities = extractionDao.getExtractionEntitiesByMember(memberDao.getMemberEntityByEmail(principal.getName()));
         LogResponseDto logResponseDto = new LogResponseDto();
         List<Log> logs = new ArrayList<>();
 

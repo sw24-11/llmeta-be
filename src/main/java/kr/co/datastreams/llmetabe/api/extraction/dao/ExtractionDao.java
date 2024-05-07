@@ -2,6 +2,7 @@ package kr.co.datastreams.llmetabe.api.extraction.dao;
 
 import kr.co.datastreams.llmetabe.api.extraction.domain.ExtractionEntity;
 import kr.co.datastreams.llmetabe.api.extraction.repository.ExtractionRepository;
+import kr.co.datastreams.llmetabe.api.member.domain.MemberEntity;
 import kr.co.datastreams.llmetabe.global.exception.DatabaseAccessException;
 import kr.co.datastreams.llmetabe.global.exception.NoSearchResultException;
 import lombok.RequiredArgsConstructor;
