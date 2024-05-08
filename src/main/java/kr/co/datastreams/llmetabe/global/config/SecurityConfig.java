@@ -1,6 +1,8 @@
 package kr.co.datastreams.llmetabe.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.datastreams.llmetabe.global.session.SessionAccessDeniedHandler;
+import kr.co.datastreams.llmetabe.global.utils.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +59,21 @@ public class SecurityConfig {
                     (cors) ->
                         cors.configurationSource(corsConfigurationSource())
                 )
-                // todo: logout
+                .logout(
+                    (logout) -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler(
+                                ((request, response, authentication) ->  {
+                                    ObjectMapper objectMapper = new ObjectMapper();
+                                    response.setStatus(200);
+                                    response.setContentType("application/json");
+                                    response.setCharacterEncoding("utf-8");
+                                    response.getWriter().write(objectMapper.writeValueAsString(
+                                        Response.ok("성공적으로 로그아웃하였습니다.")));
+                                })
+                        )
+                        .deleteCookies("JSESSIONID")
+                )
                 .exceptionHandling(
                     (exceptionHandlingConfigurer) ->
                         exceptionHandlingConfigurer.authenticationEntryPoint(authenticationEntryPoint)
