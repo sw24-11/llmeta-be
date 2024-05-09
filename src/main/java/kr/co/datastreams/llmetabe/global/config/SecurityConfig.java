@@ -58,7 +58,7 @@ public class SecurityConfig {
                                 authorizeRequests
                                         .requestMatchers("/signup/**").permitAll()
                                         .requestMatchers("/login").permitAll()
-                                        .requestMatchers("/logout").permitAll()
+                                        .requestMatchers("/logout").authenticated()
                                         .requestMatchers("/metadata/**").authenticated()
                                         .anyRequest().denyAll()
                 )
