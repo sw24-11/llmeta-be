@@ -1,21 +1,27 @@
 package kr.co.datastreams.llmetabe.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.datastreams.llmetabe.api.member.repository.MemberRepository;
+import kr.co.datastreams.llmetabe.global.filter.SessionFilter;
 import kr.co.datastreams.llmetabe.global.session.SessionAccessDeniedHandler;
 import kr.co.datastreams.llmetabe.global.utils.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.HstsConfig;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,7 +32,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
+
     private final SessionAccessDeniedHandler sessionAccessDeniedHandler;
+
+    private final AuthenticationConfiguration authenticationConfiguration;
+
+    private final MemberRepository memberRepository;
 
     @Value("${spring.websecurity.debug:false}")
     boolean webSecurityDebug;
@@ -39,8 +50,8 @@ public class SecurityConfig {
                 )
                 .headers(
                     (headerConfig) ->
-                        headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
-                            .httpStrictTransportSecurity(HeadersConfigurer.HstsConfig::disable)
+                        headerConfig.frameOptions(FrameOptionsConfig::disable)
+                            .httpStrictTransportSecurity(HstsConfig::disable)
                 )
                 .authorizeHttpRequests(
                         (authorizeRequests) ->
@@ -51,7 +62,7 @@ public class SecurityConfig {
                                         .requestMatchers("/metadata/**").authenticated()
                                         .anyRequest().denyAll()
                 )
-                // todo: addFilterBefore
+                .addFilterBefore(new SessionFilter("/login", authenticationConfiguration.getAuthenticationManager(), memberRepository), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(
                         AbstractHttpConfigurer::disable
                 )
