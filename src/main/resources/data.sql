@@ -1,7 +1,7 @@
 USE llmeta;
 
 INSERT INTO member (name, email, password, job)
-VALUES ('test@test.com', 'testpw', 'testuser', 'tester');
+VALUES ('testuser', 'test@test.com', 'testpw', 'tester');
 
 -- paper
 INSERT INTO extraction (member_id, type, meta_data, model_id)
