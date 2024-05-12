@@ -21,6 +21,10 @@ cloud:
       static: ap-northeast-2
 
 spring:
+  config:
+    activate:
+      on-profile: dev
+
   servlet:
     session:
       cookie:
