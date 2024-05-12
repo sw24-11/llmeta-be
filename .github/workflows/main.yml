@@ -34,8 +34,8 @@ jobs:
       with:
         files: 'src/main/resources/application.yml'
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
+        cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_KEY }}
 
     # Gradle Build를 위한 권한 부여
     - name: Grant execute permission for gradlew
