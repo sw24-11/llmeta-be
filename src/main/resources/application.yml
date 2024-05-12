@@ -32,6 +32,12 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
 
+  datasource:
+    url: jdbc:mysql://llmeta-database.cxn9oybwo8mo.ap-northeast-2.rds.amazonaws.com:3306/llmeta?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Seoul
+    username: admin
+    password: llmeta2024
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
 springdoc:
   api-docs:
     path: /api-docs
