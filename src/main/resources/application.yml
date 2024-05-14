@@ -8,8 +8,8 @@ flask:
 cloud:
   aws:
     credentials:
-      access-key: ${AWS_ACCESS_KEY}
-      secret-key: ${AWS_SECRET_KEY}
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
 
     s3:
       bucket: llmeta-be-bucket
@@ -21,6 +21,10 @@ cloud:
       static: ap-northeast-2
 
 spring:
+  config:
+    activate:
+      on-profile: dev
+
   servlet:
     session:
       cookie:
@@ -31,6 +35,12 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+  datasource:
+    url: jdbc:mysql://llmeta-database.cxn9oybwo8mo.ap-northeast-2.rds.amazonaws.com:3306/llmeta?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Seoul
+    username: admin
+    password: llmeta2024
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 springdoc:
   api-docs:
