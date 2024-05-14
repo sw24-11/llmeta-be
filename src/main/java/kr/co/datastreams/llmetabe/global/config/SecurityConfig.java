@@ -60,7 +60,7 @@ public class SecurityConfig {
                                         .requestMatchers("/login").permitAll()
                                         .requestMatchers("/logout").authenticated()
                                         .requestMatchers("/metadata/**").authenticated()
-                                        .anyRequest().denyAll()
+                                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(new SessionFilter("/login", authenticationConfiguration.getAuthenticationManager(), memberRepository), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(
