@@ -10,7 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EvaluationRequestDto {
-    
+
+    private Long extractionId;
     private Double rate;
     private String feedback;
 }

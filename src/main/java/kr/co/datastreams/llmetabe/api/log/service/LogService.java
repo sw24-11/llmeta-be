@@ -1,6 +1,6 @@
 package kr.co.datastreams.llmetabe.api.log.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import kr.co.datastreams.llmetabe.api.extraction.dao.ExtractionDao;
@@ -36,7 +36,7 @@ public class LogService {
 
     private final MemberDao memberDao;
     private final ExtractionDao extractionDao;
-    private final AmazonS3Client amazonS3Client;
+    private final AmazonS3 amazonS3Client;
 
     /**
      * 로그를 가져와 반환하는 메소드

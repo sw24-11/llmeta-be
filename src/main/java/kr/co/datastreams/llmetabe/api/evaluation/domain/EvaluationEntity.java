@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -32,10 +33,12 @@ public class EvaluationEntity {
     @Column(name = "feedback", nullable = false)
     private String feedback;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
-    public EvaluationEntity(EvaluationRequestDto evaluationRequestDto) {
+    public EvaluationEntity(ExtractionEntity extractionEntity, EvaluationRequestDto evaluationRequestDto) {
+        this.extraction = extractionEntity;
         this.rate = evaluationRequestDto.getRate();
         this.feedback = evaluationRequestDto.getFeedback();
     }
