@@ -37,7 +37,8 @@ public class EvaluationEntity {
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
-    public EvaluationEntity(EvaluationRequestDto evaluationRequestDto) {
+    public EvaluationEntity(ExtractionEntity extractionEntity, EvaluationRequestDto evaluationRequestDto) {
+        this.extraction = extractionEntity;
         this.rate = evaluationRequestDto.getRate();
         this.feedback = evaluationRequestDto.getFeedback();
     }
