@@ -20,7 +20,6 @@ CREATE TABLE extraction (
     file_name VARCHAR(255),
     meta_data VARCHAR(1000) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ,
-    model_id INT NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
