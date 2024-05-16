@@ -1,5 +1,6 @@
 package kr.co.datastreams.llmetabe.api.auth.controller;
 
+import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRedundancyCheckRequestDto;
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRequestDto;
 import kr.co.datastreams.llmetabe.api.auth.service.AuthService;
 import kr.co.datastreams.llmetabe.global.utils.Response;
@@ -21,8 +22,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup/redundancyCheck")
-    public Response<?> signupRedundancyCheck(@RequestBody String email) {
-        authService.signupRedundancyCheck(email);
+    public Response<?> signupRedundancyCheck(@RequestBody SignupRedundancyCheckRequestDto signupRedundancyCheckRequestDto) {
+        authService.signupRedundancyCheck(signupRedundancyCheckRequestDto);
         return Response.ok("중복되지 않은 이메일입니다.");
     }
 }
