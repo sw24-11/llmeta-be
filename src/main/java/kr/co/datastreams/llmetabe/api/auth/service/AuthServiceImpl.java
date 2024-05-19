@@ -1,6 +1,7 @@
 package kr.co.datastreams.llmetabe.api.auth.service;
 
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRedundancyCheckRequestDto;
+import kr.co.datastreams.llmetabe.api.auth.exception.PasswordException;
 import kr.co.datastreams.llmetabe.api.member.dao.MemberDao;
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRequestDto;
 import kr.co.datastreams.llmetabe.api.exception.EmailAlreadyExistException;
@@ -18,6 +19,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void signup(SignupRequestDto signupRequestDto) {
+        if (!signupRequestDto.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+            throw new PasswordException("비밀번호는 문자와 숫자를 모두 포함하며, 최소 8자여야 합니다.");
+        }
         try {
             memberDao.saveMemberEntity(signupRequestDto);
         } catch (Exception e) {
