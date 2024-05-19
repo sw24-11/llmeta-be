@@ -1,4 +1,4 @@
-package kr.co.datastreams.llmetabe.api.exception;
+package kr.co.datastreams.llmetabe.api.auth.exception;
 
 import kr.co.datastreams.llmetabe.global.advice.ErrorCode;
 import kr.co.datastreams.llmetabe.global.exception.GlobalException;

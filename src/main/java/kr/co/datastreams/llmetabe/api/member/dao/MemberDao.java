@@ -14,6 +14,10 @@ public class MemberDao {
 
     private final MemberRepository memberRepository;
 
+    public boolean hasMemberEntityByEmail(String email) {
+        return memberRepository.existsByEmail(email);
+    }
+
     public MemberEntity getMemberEntityByEmail(String email) {
         return memberRepository.findByEmail(email).orElseThrow(NoSearchResultException::new);
     }
