@@ -8,6 +8,7 @@ import kr.co.datastreams.llmetabe.api.auth.exception.EmailAlreadyExistException;
 import kr.co.datastreams.llmetabe.global.exception.DatabaseAccessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final MemberDao memberDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void signup(SignupRequestDto signupRequestDto) {
@@ -23,6 +25,7 @@ public class AuthServiceImpl implements AuthService {
             throw new PasswordException("비밀번호는 문자와 숫자를 모두 포함하며, 최소 8자여야 합니다.");
         }
         try {
+            signupRequestDto.setPassword(passwordEncoder.encode(signupRequestDto.getPassword()));
             memberDao.saveMemberEntity(signupRequestDto);
         } catch (Exception e) {
             throw new DatabaseAccessException();
