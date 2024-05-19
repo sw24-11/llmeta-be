@@ -4,7 +4,7 @@ import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRedundancyCheckRequ
 import kr.co.datastreams.llmetabe.api.auth.exception.PasswordException;
 import kr.co.datastreams.llmetabe.api.member.dao.MemberDao;
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRequestDto;
-import kr.co.datastreams.llmetabe.api.exception.EmailAlreadyExistException;
+import kr.co.datastreams.llmetabe.api.auth.exception.EmailAlreadyExistException;
 import kr.co.datastreams.llmetabe.global.exception.DatabaseAccessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
