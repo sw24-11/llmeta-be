@@ -124,7 +124,7 @@ public class ExtractionService {
         HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
         // Request
-        HttpEntity<?> response = restTemplate.postForEntity(flaskUrl, requestMessage, String.class);
+        HttpEntity<?> response = restTemplate.postForEntity(flaskUrl + "/extraction", requestMessage, String.class);
 
         // Response parsing
         ObjectMapper objectMapper = new ObjectMapper();

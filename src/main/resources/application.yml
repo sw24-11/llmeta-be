@@ -2,7 +2,7 @@ server:
   port: 8080
 
 flask:
-  url: http://localhost:5000/extraction
+  url: 14.56.196.3:5000
 
 # s3
 cloud:
