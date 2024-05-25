@@ -2,7 +2,7 @@ server:
   port: 8080
 
 flask:
-  url: 14.56.196.3:5000
+  url: 14.56.196.3:8000
 
 # s3
 cloud:
