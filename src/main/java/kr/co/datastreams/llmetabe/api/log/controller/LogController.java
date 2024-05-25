@@ -18,7 +18,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/logs")
+@RequestMapping("/metadata/logs")
 @Tag(name = "로그 컨트롤러")
 public class LogController {
 
