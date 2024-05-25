@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(ExtractionEntityListener.class)
 @Table(name = "extraction")
 public class ExtractionEntity {
 
@@ -39,7 +40,7 @@ public class ExtractionEntity {
     @Column(name = "meta_data", nullable = false)
     private String metaData;
 
-    @Column(name = "create_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createAt;
 
     @OneToMany(mappedBy = "extraction")
