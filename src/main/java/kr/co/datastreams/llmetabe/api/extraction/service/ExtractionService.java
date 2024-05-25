@@ -11,15 +11,19 @@ import kr.co.datastreams.llmetabe.api.extraction.dto.request.ExtractionRequestDt
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.ExtractionResponseDto;
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.FlaskResponseDto;
 import kr.co.datastreams.llmetabe.api.extraction.dto.response.MetaData;
+import kr.co.datastreams.llmetabe.api.extraction.enums.DataType;
 import kr.co.datastreams.llmetabe.api.member.dao.MemberDao;
 import kr.co.datastreams.llmetabe.global.exception.FileInputStreamException;
 import kr.co.datastreams.llmetabe.api.extraction.exception.FlaskHttpNoResponseException;
 import kr.co.datastreams.llmetabe.global.exception.DatabaseAccessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -28,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +53,15 @@ public class ExtractionService {
     private final MemberDao memberDao;
     private final AmazonS3 amazonS3Client;
 
+    private final int TIMEOUT = 300_000; // 5 minutes
+
+    private RestTemplate getRestTemplateWithTimeout() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(TIMEOUT);
+        factory.setReadTimeout(TIMEOUT);
+        return new RestTemplate(factory);
+    };
+
     /**
      * metadata를 추출하고 이를 DB와 S3에 저장하는 메소드
      * @param extractionRequestDto extractionRequest 시 사용하는 dto
@@ -62,12 +74,10 @@ public class ExtractionService {
     public ExtractionResponseDto extractData(ExtractionRequestDto extractionRequestDto, Principal principal) {
 
         FlaskResponseDto flaskResponseDto;
-        List<MetaData> metaData;
 
         // Flask server로부터 response를 받아옴 -> 받아온 response를 parsing하여 MetaData로 변환
         try {
             flaskResponseDto = getFlaskResponse(extractionRequestDto);
-            metaData = parseMetaDataFromFlaskResponse(flaskResponseDto);
         } catch (Exception e) {
             throw new FlaskHttpNoResponseException();
         }
@@ -85,7 +95,7 @@ public class ExtractionService {
             extractionEntity.setMember(memberDao.getMemberEntityByEmail(principal.getName()));
             extractionEntity.setType(extractionRequestDto.getDataType());
             extractionEntity.setFileName(extractionRequestDto.getFile().getOriginalFilename());
-            extractionEntity.setMetaData(metaDataToString(metaData));
+            extractionEntity.setMetaData(metaDataToString(flaskResponseDto.getText()));
 
             extractionDao.saveExtractionEntity(extractionEntity);
         } catch (Exception e) {
@@ -95,7 +105,7 @@ public class ExtractionService {
         // response 생성
         ExtractionResponseDto extractionResponseDto = new ExtractionResponseDto();
         extractionResponseDto.setType(extractionRequestDto.getDataType());
-        extractionResponseDto.setMetaData(metaData);
+        extractionResponseDto.setMetaData(flaskResponseDto.getText());
 
         return extractionResponseDto;
     }
@@ -109,46 +119,44 @@ public class ExtractionService {
      */
     private FlaskResponseDto getFlaskResponse(ExtractionRequestDto extractionRequestDto) throws Exception {
 
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = getRestTemplateWithTimeout();
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         // Body set
+        ByteArrayResource fileAsResource = new ByteArrayResource(extractionRequestDto.getFile().getBytes()) {
+            @Override
+            public String getFilename() {
+                return extractionRequestDto.getFile().getOriginalFilename();
+            }
+        };
+
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("type", extractionRequestDto.getDataType().getValue());
-        body.add("file", extractionRequestDto.getFile());
+        body.add("file", fileAsResource);
+
 
         // Message
         HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
+        String url = "http://" + flaskUrl + "/extraction-";
+        if (extractionRequestDto.getDataType() == DataType.PAPER) {
+            url += "paper";
+        }
+        if (extractionRequestDto.getDataType() == DataType.IMAGE) {
+            url += "image";
+        }
         // Request
-        HttpEntity<?> response = restTemplate.postForEntity(flaskUrl + "/extraction", requestMessage, String.class);
+        ResponseEntity<?> response = restTemplate.postForEntity(url, requestMessage, String.class);
 
         // Response parsing
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        return objectMapper.readValue(Objects.requireNonNull(response.getBody()).toString(), FlaskResponseDto.class);
-    }
+        FlaskResponseDto flaskResponseDto = objectMapper.readValue(Objects.requireNonNull(response.getBody()).toString(), FlaskResponseDto.class);
 
-    /**
-     * Flask 서버로부터 받아온 response를 parsing하여 MetaData로 변환하는 메소드
-     * @param flaskResponseDto Flask 서버로부터 받아온 response
-     *
-     * @return List<MetaData>
-     */
-    private List<MetaData> parseMetaDataFromFlaskResponse(FlaskResponseDto flaskResponseDto) {
-        List<String> metaDataSplit = List.of(flaskResponseDto.getText().split(", "));
-        List<MetaData> metaDatas = new ArrayList<>();
-
-        for (String data : metaDataSplit) {
-            String[] split = data.split(": ");
-            metaDatas.add(new MetaData(split[0], split[1]));
-        }
-
-        return metaDatas;
+        return flaskResponseDto;
     }
 
     /**
