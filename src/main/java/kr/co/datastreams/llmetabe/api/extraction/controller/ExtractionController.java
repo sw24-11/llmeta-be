@@ -7,19 +7,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import kr.co.datastreams.llmetabe.api.extraction.dto.request.ExtractionRequestDto;
-import kr.co.datastreams.llmetabe.api.extraction.enums.DataType;
 import kr.co.datastreams.llmetabe.api.extraction.service.ExtractionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.datastreams.llmetabe.global.utils.Response;
 
 import java.security.Principal;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 데이터 추출 컨트롤러
@@ -36,8 +33,7 @@ public class ExtractionController {
 
     /**
      * 데이터 추출 메소드
-     * @param dataType dataType
-     * @param file file
+     * @param extractionRequestDto extractionRequestDto
      * @param principal principal
      *
      * @return Response<?>
@@ -45,8 +41,7 @@ public class ExtractionController {
     @PostMapping()
     @Operation(summary = "데이터 추출", description = "데이터를 추출합니다.")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Response.class)))
-    public Response<?> extractData(@RequestParam("dataType")DataType dataType, @RequestParam("file") MultipartFile file, Principal principal) {
-        ExtractionRequestDto extractionRequestDto = new ExtractionRequestDto(dataType, file);
+    public Response<?> extractData(@ModelAttribute ExtractionRequestDto extractionRequestDto, Principal principal) {
         return Response.ok(extractionService.extractData(extractionRequestDto, principal), "성공적으로 데이터를 추출하였습니다.");
     }
 }
