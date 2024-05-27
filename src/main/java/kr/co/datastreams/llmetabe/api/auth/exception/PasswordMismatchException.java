@@ -3,9 +3,9 @@ package kr.co.datastreams.llmetabe.api.auth.exception;
 import kr.co.datastreams.llmetabe.global.advice.ErrorCode;
 import kr.co.datastreams.llmetabe.global.exception.GlobalException;
 
-public class PasswordException extends GlobalException {
+public class PasswordMismatchException extends GlobalException {
 
-    public PasswordException(String message) {
+    public PasswordMismatchException(String message) {
         super(message);
     }
 
