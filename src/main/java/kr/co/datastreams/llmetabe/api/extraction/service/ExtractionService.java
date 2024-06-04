@@ -60,7 +60,7 @@ public class ExtractionService {
         factory.setConnectTimeout(TIMEOUT);
         factory.setReadTimeout(TIMEOUT);
         return new RestTemplate(factory);
-    };
+    }
 
     /**
      * metadata를 추출하고 이를 DB와 S3에 저장하는 메소드
@@ -89,9 +89,9 @@ public class ExtractionService {
             throw new FileInputStreamException();
         }
 
+        ExtractionEntity extractionEntity = new ExtractionEntity();
         // 추출 정보를 DB에 저장
         try {
-            ExtractionEntity extractionEntity = new ExtractionEntity();
             extractionEntity.setMember(memberDao.getMemberEntityByEmail(principal.getName()));
             extractionEntity.setType(extractionRequestDto.getDataType());
             extractionEntity.setFileName(extractionRequestDto.getFile().getOriginalFilename());
@@ -104,6 +104,7 @@ public class ExtractionService {
 
         // response 생성
         ExtractionResponseDto extractionResponseDto = new ExtractionResponseDto();
+        extractionResponseDto.setExtractionId(extractionEntity.getExtractionId());
         extractionResponseDto.setType(extractionRequestDto.getDataType());
         extractionResponseDto.setMetaData(flaskResponseDto.getText());
 
@@ -154,9 +155,7 @@ public class ExtractionService {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        FlaskResponseDto flaskResponseDto = objectMapper.readValue(Objects.requireNonNull(response.getBody()).toString(), FlaskResponseDto.class);
-
-        return flaskResponseDto;
+        return objectMapper.readValue(Objects.requireNonNull(response.getBody()).toString(), FlaskResponseDto.class);
     }
 
     /**

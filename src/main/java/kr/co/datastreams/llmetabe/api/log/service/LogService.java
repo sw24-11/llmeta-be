@@ -53,6 +53,7 @@ public class LogService {
         try {
             for (ExtractionEntity extractionEntity : extractionEntities) {
                 Log log = new Log();
+                log.setExtractionId(extractionEntity.getExtractionId());
                 log.setCreateAt(extractionEntity.getCreateAt());
                 byte[] file = getFileFromS3(extractionEntity.getFileName());
                 log.setInput(new Input(extractionEntity.getCreateAt(), file));
@@ -71,7 +72,7 @@ public class LogService {
 
     /**
      * S3로부터 파일을 가져와 반환하는 메소드
-     * @param fileName
+     * @param fileName 파일 이름
      *
      * @return byte[]
      */
@@ -92,7 +93,7 @@ public class LogService {
 
     /**
      * String -> List<MetaData>로 변환하는 메소드
-     * @param metaData
+     * @param metaData 메타데이터
      *
      * @return List<MetaData>
      */
