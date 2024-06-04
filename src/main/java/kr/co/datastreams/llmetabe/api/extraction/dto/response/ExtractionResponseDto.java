@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ExtractionResponseDto {
+    private Long extractionId;
     private DataType type;
     private List<MetaData> metaData;
 }
