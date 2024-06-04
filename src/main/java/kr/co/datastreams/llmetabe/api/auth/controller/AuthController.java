@@ -32,6 +32,8 @@ public class AuthController {
     }
 
     @PostMapping("/redundancyCheck")
+    @Operation(summary = "회원가입 중복 체크", description = "회원가입 시 아이디 중복 여부를 확인합니다.")
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Response.class)))
     public Response<?> signupRedundancyCheck(@RequestBody SignupRedundancyCheckRequestDto signupRedundancyCheckRequestDto) {
         authService.signupRedundancyCheck(signupRedundancyCheckRequestDto);
         return Response.ok("중복되지 않은 이메일입니다.");
