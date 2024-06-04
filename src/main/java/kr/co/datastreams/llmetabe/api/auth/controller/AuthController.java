@@ -1,5 +1,9 @@
 package kr.co.datastreams.llmetabe.api.auth.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRedundancyCheckRequestDto;
 import kr.co.datastreams.llmetabe.api.auth.dto.request.SignupRequestDto;
@@ -20,6 +24,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping()
+    @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Response.class)))
     public Response<?> signup(@RequestBody SignupRequestDto signupRequestDto) {
         authService.signup(signupRequestDto);
         return Response.ok("성공적으로 회원가입하였습니다.");
