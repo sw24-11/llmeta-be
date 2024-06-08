@@ -92,7 +92,8 @@ public class ExtractionService {
         ExtractionEntity extractionEntity = new ExtractionEntity();
         // 추출 정보를 DB에 저장
         try {
-            extractionEntity.setMember(memberDao.getMemberEntityByEmail(principal.getName()));
+//            extractionEntity.setMember(memberDao.getMemberEntityByEmail(principal.getName()));
+            extractionEntity.setMember(memberDao.getMemberEntityByEmail(extractionRequestDto.getEmail()));
             extractionEntity.setType(extractionRequestDto.getDataType());
             extractionEntity.setFileName(extractionRequestDto.getFile().getOriginalFilename());
             extractionEntity.setMetaData(metaDataToString(flaskResponseDto.getText()));
