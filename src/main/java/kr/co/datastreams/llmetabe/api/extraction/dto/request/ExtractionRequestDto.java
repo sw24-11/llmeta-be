@@ -14,4 +14,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class ExtractionRequestDto {
     private DataType dataType;
     private MultipartFile file;
+    private String email;
 }

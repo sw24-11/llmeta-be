@@ -44,9 +44,10 @@ public class LogService {
      *
      * @return logResponseDto
      */
-    public LogResponseDto getLogs(Principal principal) {
+    public LogResponseDto getLogs(Principal principal, String email) {
 
-        List<ExtractionEntity> extractionEntities = extractionDao.getExtractionEntitiesByMember(memberDao.getMemberEntityByEmail(principal.getName()));
+//        List<ExtractionEntity> extractionEntities = extractionDao.getExtractionEntitiesByMember(memberDao.getMemberEntityByEmail(principal.getName()));
+        List<ExtractionEntity> extractionEntities = extractionDao.getExtractionEntitiesByMember(memberDao.getMemberEntityByEmail(email));
         LogResponseDto logResponseDto = new LogResponseDto();
         List<Log> logs = new ArrayList<>();
 
