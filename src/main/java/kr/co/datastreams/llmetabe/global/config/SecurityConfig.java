@@ -56,10 +56,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         (authorizeRequests) ->
                                 authorizeRequests
-                                        .requestMatchers("/signup/**").permitAll()
-                                        .requestMatchers("/login").permitAll()
-                                        .requestMatchers("/logout").authenticated()
-                                        .requestMatchers("/metadata/**").authenticated()
+//                                        .requestMatchers("/signup/**").permitAll()
+//                                        .requestMatchers("/login").permitAll()
+//                                        .requestMatchers("/logout").authenticated()
+//                                        .requestMatchers("/metadata/**").authenticated()
                                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(new SessionFilter("/login", authenticationConfiguration.getAuthenticationManager(), memberRepository), UsernamePasswordAuthenticationFilter.class)
