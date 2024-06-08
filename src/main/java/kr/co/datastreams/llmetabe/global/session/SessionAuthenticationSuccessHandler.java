@@ -27,8 +27,9 @@ public class SessionAuthenticationSuccessHandler implements AuthenticationSucces
         response.setCharacterEncoding("utf-8");
 
         User user = (User)authentication.getPrincipal();
-        Optional<MemberEntity> memberEntity = memberRepository.findByEmail(user.getUsername());
+        MemberEntity memberEntity = memberRepository.findByEmail(user.getUsername()).orElse(null);
 
-        response.getWriter().write(objectMapper.writeValueAsString(Response.ok(memberEntity.get().getEmail(), "성공적으로 로그인하였습니다.")));
+        LoginResponseDto loginResponseDto = new LoginResponseDto(memberEntity.getEmail(), memberEntity.getName());
+        response.getWriter().write(objectMapper.writeValueAsString(Response.ok(loginResponseDto, "성공적으로 로그인하였습니다.")));
     }
 }
