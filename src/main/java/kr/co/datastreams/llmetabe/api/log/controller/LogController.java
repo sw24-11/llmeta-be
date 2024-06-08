@@ -8,10 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.datastreams.llmetabe.api.log.service.LogService;
 import kr.co.datastreams.llmetabe.global.utils.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -33,7 +32,7 @@ public class LogController {
     @GetMapping()
     @Operation(summary = "로그 조회", description = "로그를 조회합니다.")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Response.class)))
-    public Response<?> getLogs(Principal principal) {
-        return Response.ok(logService.getLogs(principal), "성공적으로 로그를 조회하였습니다.");
+    public Response<?> getLogs(Principal principal, @RequestParam String email) {
+        return Response.ok(logService.getLogs(principal, email), "성공적으로 로그를 조회하였습니다.");
     }
 }
