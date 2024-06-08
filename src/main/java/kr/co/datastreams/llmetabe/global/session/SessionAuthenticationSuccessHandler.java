@@ -29,6 +29,6 @@ public class SessionAuthenticationSuccessHandler implements AuthenticationSucces
         User user = (User)authentication.getPrincipal();
         Optional<MemberEntity> memberEntity = memberRepository.findByEmail(user.getUsername());
 
-        response.getWriter().write(objectMapper.writeValueAsString(Response.ok(memberEntity.get().getName(), "성공적으로 로그인하였습니다.")));
+        response.getWriter().write(objectMapper.writeValueAsString(Response.ok(memberEntity.get().getEmail(), "성공적으로 로그인하였습니다.")));
     }
 }
